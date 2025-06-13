@@ -92,12 +92,35 @@
 		return false;
 	};
 
+	var requiresApiKey = function(providerName) {
+		var parts = providerName.split('.');
+		var provider = L.TileLayer.Provider.providers[parts[0]];
+		if (!provider) {
+			return false;
+		}
+		var options = L.extend({}, provider.options);
+		if (parts.length > 1 && provider.variants && provider.variants[parts[1]]) {
+			var variant = provider.variants[parts[1]];
+			if (typeof variant === 'string') {
+				options.variant = variant;
+			} else if (variant.options) {
+				options = L.extend(options, variant.options);
+			}
+		}
+		for (var key in options) {
+			if (typeof options[key] === 'string' && (/<insert[^>]*here>/i).test(options[key])) {
+				return true;
+			}
+		}
+		return false;
+	};
+
 	// collect all layers available in the provider definition
 	var baseLayers = {};
 	var overlays = {};
 
 	var addLayer = function(name) {
-		if (isIgnored(name)) {
+		if (isIgnored(name) || requiresApiKey(name)) {
 			return;
 		}
 		var layer = L.tileLayer.provider(name);
