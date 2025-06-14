@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+        <title>Leaflet Code Generator</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+       <link rel="stylesheet" href="vendor/leaflet.css" />
+        <style>
+                html { height: 100%; }
+                body { height: 100%; margin: 0; padding: 0; }
+                .map { height: calc(100% - 200px); }
+                #controls {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        background: rgba(255, 255, 255, 0.85);
+                        padding: 6px 8px;
+                        border-radius: 4px;
+                        font: 14px/16px Arial, Helvetica, sans-serif;
+                        z-index: 1000;
+                        max-height: calc(100% - 220px);
+                        overflow-y: auto;
+                }
+                #code {
+                        height: 200px;
+                        overflow-y: auto;
+                        background: #f7f7f7;
+                        margin: 0;
+                }
+                #overlay-list li {
+                        list-style: none;
+                        cursor: move;
+                }
+        </style>
+        <link rel="stylesheet" href="vendor/github.css" />
+</head>
+<body>
+        <div id="map" class="map"></div>
+        <div id="controls">
+                <label for="basemap-select">Base layer:</label>
+                <select id="basemap-select"></select>
+                <details open>
+                        <summary>Overlays</summary>
+                        <ul id="overlay-list"></ul>
+                </details>
+        </div>
+        <pre id="code"><code class="javascript" id="code-output"></code></pre>
+
+       <script src="vendor/leaflet.js"></script>
+        <script src="../leaflet-providers.js"></script>
+        <script src="vendor/highlight.pack.js"></script>
+        <script src="shared.js"></script>
+        <script src="code-generator.js"></script>
+</body>
+</html>
