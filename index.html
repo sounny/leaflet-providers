@@ -10,7 +10,26 @@
 	<style>
                 html { height: 100% }
                 body { height: 100%; margin: 0; padding: 0; }
-                .map { height: 100%; position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
+                .map { height: 100%; position: absolute; top: 0; right: 0; bottom: 0; left: 220px; }
+                #toc {
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        width: 220px;
+                        overflow-y: auto;
+                        background: rgba(255, 255, 255, 0.9);
+                        padding: 10px;
+                        font: 14px/16px Arial, Helvetica, sans-serif;
+                        z-index: 1000;
+                }
+                #toc h4 {
+                        margin: 0 0 6px;
+                }
+                #toc select {
+                        width: 100%;
+                        margin-top: 10px;
+                }
                 h1 {
                         position: absolute;
                         top: 10px;
@@ -52,6 +71,12 @@
                 <code class="provider-names"></code>
                 <h4>Plain JavaScript:</h4>
                 <pre><code class="javascript"></code></pre>
+        </div>
+        <div id="toc">
+                <h4>Overlays</h4>
+                <div id="overlays"></div>
+                <h4>Map Tiles</h4>
+                <select id="base-select"></select>
         </div>
         <div id="map" class="map"></div>
 
@@ -135,18 +160,50 @@
                         'Waymarked Trails Skating': createProviderLayer('WaymarkedTrails.skating')
                 };
 
-                L.control.layers(baseLayers, overlayLayers, {collapsed: false}).addTo(map);
+                var overlaysEl = document.getElementById('overlays');
+                var baseSelect = document.getElementById('base-select');
+                var currentBase = defaultLayer;
 
-                // resize layers control to fit into view.
-                function resizeLayerControl () {
-                        var layerControlHeight = document.body.clientHeight - (10 + 50);
-                        var layerControl = document.getElementsByClassName('leaflet-control-layers-expanded')[0];
+                Object.keys(baseLayers).forEach(function(name) {
+                        var option = document.createElement('option');
+                        option.value = name;
+                        option.textContent = name;
+                        baseSelect.appendChild(option);
+                });
+                baseSelect.value = 'OpenStreetMap Default';
+                baseSelect.addEventListener('change', function() {
+                        var name = this.value;
+                        if (currentBase) {
+                                map.removeLayer(currentBase);
+                        }
+                        currentBase = baseLayers[name];
+                        map.addLayer(currentBase);
+                        setBackground(currentBase.providerName);
+                        updateInfo();
+                });
 
-                        layerControl.style.overflowY = 'auto';
-                        layerControl.style.maxHeight = layerControlHeight + 'px';
-                }
-                map.on('resize', resizeLayerControl);
-                resizeLayerControl();
+                Object.keys(overlayLayers).forEach(function(name, idx) {
+                        var id = 'overlay-' + idx;
+                        var cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.id = id;
+                        cb.dataset.layer = name;
+                        var label = document.createElement('label');
+                        label.htmlFor = id;
+                        label.textContent = name;
+                        overlaysEl.appendChild(cb);
+                        overlaysEl.appendChild(label);
+                        overlaysEl.appendChild(document.createElement('br'));
+                        cb.addEventListener('change', function() {
+                                var layer = overlayLayers[this.dataset.layer];
+                                if (this.checked) {
+                                        map.addLayer(layer);
+                                } else {
+                                        map.removeLayer(layer);
+                                }
+                                updateInfo();
+                        });
+                });
 
                 function setBackground(name) {
                         if (/Dark|Toner/.test(name)) {
