@@ -9,6 +9,11 @@
 		zoomControl: false
 	});
 
+	var scaleControl = L.control.scale();
+	var miniMap;
+	var drawnItems = new L.FeatureGroup();
+	var drawControl;
+
 	function createProviderLayer(name) {
 		var layer = L.tileLayer.provider(name);
 		layer.providerName = name;
@@ -145,6 +150,68 @@
 		updateCode();
 	});
 
+	var scaleToggle = document.getElementById('toggle-scale');
+	var miniMapToggle = document.getElementById('toggle-minimap');
+	var drawToggle = document.getElementById('toggle-draw');
+
+	function updateScaleControl() {
+		if (scaleToggle.checked) {
+			scaleControl.addTo(map);
+		} else {
+			map.removeControl(scaleControl);
+		}
+	}
+	scaleToggle.addEventListener('change', function() {
+		updateScaleControl();
+		updateCode();
+	});
+	updateScaleControl();
+
+	function updateMiniMap() {
+		if (miniMapToggle.checked) {
+			if (!miniMap) {
+				miniMap = new L.Control.MiniMap(L.tileLayer.provider('OpenStreetMap.Mapnik'), {
+					toggleDisplay: true
+				}).addTo(map);
+			} else {
+				miniMap.addTo(map);
+			}
+		} else if (miniMap) {
+			map.removeControl(miniMap);
+		}
+	}
+	miniMapToggle.addEventListener('change', function() {
+		updateMiniMap();
+		updateCode();
+	});
+
+	function updateDraw() {
+		if (drawToggle.checked) {
+			if (!map.hasLayer(drawnItems)) {
+				map.addLayer(drawnItems);
+			}
+			if (!drawControl) {
+				drawControl = new L.Control.Draw({
+					edit: { featureGroup: drawnItems }
+				});
+			}
+			map.addControl(drawControl);
+		} else {
+			if (drawControl) {
+				map.removeControl(drawControl);
+			}
+			if (map.hasLayer(drawnItems)) {
+				map.removeLayer(drawnItems);
+			}
+		}
+	}
+	drawToggle.addEventListener('change', function() {
+		updateDraw();
+		updateCode();
+	});
+	updateMiniMap();
+	updateDraw();
+
 	function reorderOverlays() {
 		var names = Array.prototype.map.call(overlayList.children, function(li) {
 			return li.dataset.provider;
@@ -195,6 +262,17 @@
 				snippet += layer.providerName.replace('.', '_') + '.addTo(map);\n';
 			}
 		});
+		if (scaleToggle.checked) {
+			snippet += 'L.control.scale().addTo(map);\n';
+		}
+		if (miniMapToggle.checked) {
+			snippet += 'var miniMap = new L.Control.MiniMap(L.tileLayer.provider(\'OpenStreetMap.Mapnik\'), {toggleDisplay: true}).addTo(map);\n';
+		}
+		if (drawToggle.checked) {
+			snippet += 'var drawnItems = new L.FeatureGroup().addTo(map);\n';
+			snippet += 'var drawControl = new L.Control.Draw({edit: {featureGroup: drawnItems}});\n';
+			snippet += 'map.addControl(drawControl);\n';
+		}
 		codeEl.textContent = snippet;
 		if (window.hljs) {
 			hljs.highlightElement(codeEl);

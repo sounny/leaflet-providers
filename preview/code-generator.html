@@ -35,6 +35,8 @@
                 }
         </style>
         <link rel="stylesheet" href="vendor/github.css" />
+        <link rel="stylesheet" href="vendor/leaflet.draw.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css" />
 </head>
 <body>
         <div id="map" class="map"></div>
@@ -45,12 +47,20 @@
                         <summary>Overlays</summary>
                         <ul id="overlay-list"></ul>
                 </details>
+                <details open>
+                        <summary>Tools</summary>
+                        <label><input type="checkbox" id="toggle-scale" checked> Scale Bar</label><br>
+                        <label><input type="checkbox" id="toggle-minimap"> Mini Map</label><br>
+                        <label><input type="checkbox" id="toggle-draw"> Drawing</label>
+                </details>
         </div>
         <pre id="code"><code class="javascript" id="code-output"></code></pre>
 
        <script src="vendor/leaflet.js"></script>
         <script src="../leaflet-providers.js"></script>
         <script src="vendor/highlight.pack.js"></script>
+        <script src="vendor/leaflet.draw-src.js"></script>
+        <script src="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js"></script>
         <script src="shared.js"></script>
         <script src="code-generator.js"></script>
 </body>
