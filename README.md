@@ -2,6 +2,8 @@ Leaflet-providers
 =================
 An extension to [Leaflet](http://leafletjs.com/) that contains configurations for various free<sup>[1](#what-is-free)</sup> tile providers.
 
+This repository forks the original [leaflet-providers](https://github.com/leaflet-extras/leaflet-providers) project. It adds an offline preview, a code generator and other user interface enhancements. The fork is maintained at [sounny/leaflet-providers](https://github.com/sounny/leaflet-providers).
+
 # Installation
 
 ## Bundler
@@ -32,7 +34,7 @@ L.tileLayer.provider('Stadia.StamenWatercolor').addTo(map);
 
 # Providers
 
-Leaflet-providers provides tile layers from different providers, including *OpenStreetMap*, *Esri* and *OpenWeatherMap*. The full listing of free to use layers can be [previewed](http://leaflet-extras.github.io/leaflet-providers/preview/index.html). The page will show you the name to use with `leaflet-providers.js` and the code to use it without dependencies.
+Leaflet-providers provides tile layers from different providers, including *OpenStreetMap*, *Esri* and *OpenWeatherMap*. The full listing of free to use layers can be [previewed](https://sounny.github.io/leaflet-providers/preview/index.html). The page will show you the name to use with `leaflet-providers.js` and the code to use it without dependencies.
 
 ## Providers requiring registration
 
@@ -109,7 +111,7 @@ L.tileLayer.provider('Thunderforest.Landscape', {apikey: '<insert api_key here>'
 
 In order to use ArcGIS maps, you must [register](https://developers.arcgis.com/en/sign-up/) and abide by the [terms of service](https://developers.arcgis.com/en/terms/). No special syntax is required.
 
-[Available Esri layers](http://leaflet-extras.github.io/leaflet-providers/preview/#filter=Esri)
+[Available Esri layers](https://sounny.github.io/leaflet-providers/preview/#filter=Esri)
 
 ### TomTom
 
