@@ -20,11 +20,14 @@
     "bugs": {
         "url": "https://github.com/leaflet-extras/leaflet-providers/issues"
     },
+    "engines": {
+        "node": ">=18"
+    },
     "files": [
         "leaflet-providers.js",
         "README.md",
         "CHANGELOG.md",
-        "licence.md"
+        "LICENSE"
     ],
     "devDependencies": {
         "chai": "^5.0.0",

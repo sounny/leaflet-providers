@@ -4,6 +4,8 @@ An extension to [Leaflet](http://leafletjs.com/) that contains configurations fo
 
 This repository forks the original [leaflet-providers](https://github.com/leaflet-extras/leaflet-providers) project. It adds an offline preview, a code generator and other user interface enhancements. The fork is maintained at [sounny/leaflet-providers](https://github.com/sounny/leaflet-providers).
 
+Development requires Node.js 18 or later.
+
 # Installation
 
 ## Bundler
